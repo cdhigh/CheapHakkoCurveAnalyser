@@ -6,7 +6,7 @@
 ![ScreenShot](https://raw.githubusercontent.com/cdhigh/CheapHakkoCurveAnalyser/master/GUI/ScreenShoot.jpg)
 
 ## 致谢
-此软件灵感来自 [http://bbs.mydigit.cn/read.php?tid=985779]，由网友 <master0123>写的《白光T12三线式控温（616控制器）分析》<br />
+此软件灵感来自 [http://bbs.mydigit.cn/read.php?tid=985779] ，由网友 <master0123>写的《白光T12三线式控温（616控制器）分析》<br />
 因为我采用的是TL431方案，稳压6V，所以不能照搬此文章中的电阻阻值，为此仔细研究了此文章，明白了其原理，特写出此软件方便其他需要的网友DIY使用。
 
 ## 软件使用方法和一些说明
