@@ -1,0 +1,89 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>白菜白光三线式调温设计软件</title>
+    <style type="text/css">
+    h2{
+      font-size:1.2em;
+      margin-top:2em;
+      padding-left:0.8em;
+      border-left:0.5em outset silver;
+      border-bottom:1px dotted silver;
+    }
+    li{margin:0.5em;list-style-type:square;}
+    ul#navlst > li{list-style-type:circle;}
+    </style>
+</head>
+<body>
+    <div id="header">  
+        <h1><a href="/">白菜白光三线式调温设计软件说明文件</a></h1>
+        <div class="clear"></div>
+    </div>
+    <div class="faqnav">
+      <ul id="navlst">
+        <li><a href="#whatis">软件简述</a></li>
+        <li><a href="#curveusage">绘制调温曲线使用说明</a></li>
+        <li><a href="#bestchoices">“为我推荐”功能使用说明</a></li>
+        <li><a href="#license">版权说明</a></li>
+      </ul>
+    </div>
+    
+    <span id="whatis"></span>
+    <h2>软件简述</h2>
+    <p>此软件的灵感来自数码之家网友写的文章 <a href="http://bbs.mydigit.cn/read.php?tid=985779"> 白光T12三线式控温（616控制器）分析 </a>
+    <br />这里抄录要点如下：
+    <blockquote cite="http://bbs.mydigit.cn/read.php?tid=985779" style="background-color:#e0e0e0">
+    一般的白光T12电路都使用了传统的两线式电位器控制，这种控制方式的缺点在于温度的线性度比较差，在高温区温度比较集中。<br />
+    而最新版的616白光控制器4.0使用了三线控制方法。使用三线控制电路可以使温度的变化比较接近于线性变化，使用更加方便。    
+    </blockquote>
+    此软件就是用于分析和设计此三线式控制电路，可以直观的看到选定的阻值组合的调温线性度，如果你正在DIY一个白菜白光电路，但是手头没有原电路上标注的电阻器阻值，则此软件也可以为了计算和推荐一些其他的组合，总有一种组合你会满意。<br />
+    </p>
+    <p class="answer">主要特性：
+    <ul>
+     <li>给定各电阻组合后可以绘制出根据电位器旋转角度对应的调温曲线。</li>
+     <li>给定电阻组合后可以计算出最低温度和最高温度。</li>
+     <li>可以通过任何给定的已知电阻或需要的温度范围，计算和推荐可能的其他电阻阻值。</li>
+    </ul>
+    <p>软件托管在github上 <a href="https://github.com/cdhigh/CheapHakkoCurveAnalyser">Github 仓库链接</a></p>
+    </p>
+    
+    <span id="curveusage"></span>
+    <h2>绘制调温曲线使用说明</h2>
+    <p class="answer">
+    <ul>
+      <li>需要绘制调温曲线时，运放电压、电位器、几个电阻的值必须填写。</li>
+      <li>曲线图中红线表示理想的调温曲线（直线），黑线为实际的调温曲线。</li>
+      <li>曲线图中的横坐标为电位器旋转角度，纵坐标为T12热电偶温度。</li>
+      <li>热电偶温度计算假定室温为零度。</li>
+      <li>master0123原文章中计算热电偶温度使用常量0.0157mV/℃，我感觉计算出来的温度和实际的表现偏差较大，为此我搜索到另一个算法“线性化处理”，计算出的结果感觉和实际表现比较吻合，故建议使用此算法，但为了对比，你也可以在界面上选取另一种算法。</li>
+      <li>因T12热电偶类型不明，温度值仅供参考，关注参考电压值即可。</li>
+    </ul>
+    </p>
+    
+    <span id="bestchoices"></span>
+    <h2>“为我推荐”功能使用说明</h2>
+    <p class="answer">
+        <ul>
+          <li>“为我推荐”功能可以根据一些已知的电阻计算其他可以接受的电阻组合。</li>
+          <li>在点击前，除电源电压和电位器阻值外，要保证至少有一个其他电阻是留空的，可以留空任意个电阻或全部留空。</li>
+          <li>最小参考电压、最大参考电压、最低温度、最高温度这几个参数也可以做为计算的约束条件，如果不确定，请留空，否则会计算符合你要求温度范围的阻值（可能会没有符合的阻值组合）。</li>
+          <li>计算时软件仅在标准阻值系列中选取，如果你需要非标准阻值或几个电阻串并联，则你只能先将你选定的阻值填写在对应文本框中。</li>
+          <li>如果点击“为我推荐”后，此按钮下方的列表框为空，则说明没有符合条件的电阻组合，可能你需要删除部分阻值或温度值或选择其他的排序筛选策略，然后再试。</li>
+          <li>符合条件的电阻组合可能有很多，此界面仅显示经过一定的排序处理后的前30个结果，可以随时切换为其他的排序策略。</li>
+          <li>推荐的电阻组合列表显示为逗号分隔的 [R8,R9,R10,最低温度,最高温度] ，鼠标双击后会更新到界面对应电阻的文本框中，并自动绘制调温曲线。</li>
+        </ul>
+    </p>
+    
+    <span id="license"></span>
+    <h2>版权说明</h2>
+    <p class="answer">
+    <ul>
+      <li>本软件采用MIT版本协议，可以自由使用，作者仅需要版权声明。</li>
+      <li>软件界面上的电路图版权归于616，而白菜白光电路创始作者为 more 。</li>
+      <li>白菜白光电路三线式电阻网络分析创意归 master0123 所有。</li>
+    </ul>
+    </p>
+    
+</body>
+</html>

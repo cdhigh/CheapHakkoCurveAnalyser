@@ -34,9 +34,9 @@ exe = Executable(
 )
 
 setup( name = 'CheapHakkoCurveAnalyser', 
-        version = '0.1',
+        version = '0.2',
         description = 'CheapHakkoCurveAnalyser',
         options = {'build_exe': build_exe_options},
         executables = [Executable(pyScriptFile, base = base,
-            icon='icon.ico', )])
+            icon='gui/icon.ico', )])
 

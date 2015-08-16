@@ -1,58 +1,74 @@
 VERSION 5.00
 Begin VB.Form frmMain 
    BorderStyle     =   1  'Fixed Single
-   Caption         =   "白菜白光三线式调温电路分析软件 [cdhigh]"
-   ClientHeight    =   9630
+   Caption         =   "白菜白光三线式调温电路设计软件 [cdhigh]"
+   ClientHeight    =   9900
    ClientLeft      =   45
    ClientTop       =   435
-   ClientWidth     =   12555
+   ClientWidth     =   12420
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   9630
-   ScaleWidth      =   12555
+   ScaleHeight     =   9900
+   ScaleWidth      =   12420
    StartUpPosition =   2  '屏幕中心
    Tag             =   "p@icon=icon.gif"
    Begin VB.Frame frameDesgin 
       Caption         =   "参数设计"
-      Height          =   4695
-      Left            =   6000
+      Height          =   5055
+      Left            =   5880
       TabIndex        =   2
-      Top             =   4800
+      Top             =   4680
       Width           =   6375
-      Begin VB.ComboBox cmbTempFormula 
+      Begin VB.ComboBox cmbSortPolicy 
          Height          =   300
          ItemData        =   "frmMain.frx":0000
-         Left            =   2400
-         List            =   "frmMain.frx":000A
-         Style           =   2  'Dropdown List
-         TabIndex        =   24
-         Top             =   4320
-         Width           =   1335
-      End
-      Begin VB.TextBox txtTips 
-         BackColor       =   &H00C0FFFF&
-         BorderStyle     =   0  'None
-         Height          =   3735
          Left            =   4080
-         Locked          =   -1  'True
-         MultiLine       =   -1  'True
-         TabIndex        =   22
+         List            =   "frmMain.frx":0013
+         Style           =   2  'Dropdown List
+         TabIndex        =   26
+         Tag             =   "p@bindcommand=<<ComboboxSelected>>"
+         Top             =   1440
+         Width           =   2055
+      End
+      Begin VB.ListBox lstBestChoices 
+         Height          =   3120
+         Left            =   4080
+         TabIndex        =   25
+         Tag             =   "p@bindcommand=<Double-Button-1>"
+         Top             =   1800
+         Width           =   2055
+      End
+      Begin VB.CommandButton cmdBestChoices 
+         Caption         =   "为我推荐"
+         Height          =   495
+         Left            =   4080
+         TabIndex        =   24
          Top             =   840
          Width           =   2055
+      End
+      Begin VB.ComboBox cmbTempFormula 
+         Height          =   300
+         ItemData        =   "frmMain.frx":0074
+         Left            =   2400
+         List            =   "frmMain.frx":007E
+         Style           =   2  'Dropdown List
+         TabIndex        =   23
+         Top             =   4680
+         Width           =   1335
       End
       Begin VB.TextBox txtMinVol 
          Height          =   270
          Left            =   2400
          TabIndex        =   15
-         Top             =   2505
+         Top             =   2705
          Width           =   1335
       End
       Begin VB.TextBox txtMaxVol 
          Height          =   270
          Left            =   2400
          TabIndex        =   16
-         Top             =   2958
+         Top             =   3198
          Width           =   1335
       End
       Begin VB.CommandButton cmdDrawCurve 
@@ -67,14 +83,14 @@ Begin VB.Form frmMain
          Height          =   270
          Left            =   2400
          TabIndex        =   18
-         Top             =   3864
+         Top             =   4184
          Width           =   1335
       End
       Begin VB.TextBox txtMinTemp 
          Height          =   270
          Left            =   2400
          TabIndex        =   17
-         Top             =   3411
+         Top             =   3691
          Width           =   1335
       End
       Begin VB.TextBox txtR10 
@@ -82,7 +98,7 @@ Begin VB.Form frmMain
          Left            =   2400
          TabIndex        =   14
          Text            =   "56000"
-         Top             =   2052
+         Top             =   2212
          Width           =   1335
       End
       Begin VB.TextBox txtR9 
@@ -90,7 +106,7 @@ Begin VB.Form frmMain
          Left            =   2400
          TabIndex        =   13
          Text            =   "51"
-         Top             =   1599
+         Top             =   1719
          Width           =   1335
       End
       Begin VB.TextBox txtR8 
@@ -98,7 +114,7 @@ Begin VB.Form frmMain
          Left            =   2400
          TabIndex        =   12
          Text            =   "43000"
-         Top             =   1146
+         Top             =   1226
          Width           =   1335
       End
       Begin VB.TextBox txtRT 
@@ -106,7 +122,7 @@ Begin VB.Form frmMain
          Left            =   2400
          TabIndex        =   11
          Text            =   "10000"
-         Top             =   693
+         Top             =   733
          Width           =   1335
       End
       Begin VB.TextBox txtVCC 
@@ -122,8 +138,8 @@ Begin VB.Form frmMain
          Caption         =   "温度计算公式"
          Height          =   255
          Left            =   240
-         TabIndex        =   23
-         Top             =   4320
+         TabIndex        =   22
+         Top             =   4680
          Width           =   1935
       End
       Begin VB.Label lblMinVol 
@@ -132,7 +148,7 @@ Begin VB.Form frmMain
          Height          =   255
          Left            =   240
          TabIndex        =   21
-         Top             =   2505
+         Top             =   2705
          Width           =   1935
       End
       Begin VB.Label lblMaxVol 
@@ -141,7 +157,7 @@ Begin VB.Form frmMain
          Height          =   255
          Left            =   240
          TabIndex        =   20
-         Top             =   2958
+         Top             =   3198
          Width           =   1935
       End
       Begin VB.Label lblMaxTemp 
@@ -150,7 +166,7 @@ Begin VB.Form frmMain
          Height          =   255
          Left            =   240
          TabIndex        =   9
-         Top             =   3864
+         Top             =   4184
          Width           =   1935
       End
       Begin VB.Label lblMinTemp 
@@ -159,7 +175,7 @@ Begin VB.Form frmMain
          Height          =   255
          Left            =   240
          TabIndex        =   8
-         Top             =   3411
+         Top             =   3691
          Width           =   1935
       End
       Begin VB.Label lblR10 
@@ -168,7 +184,7 @@ Begin VB.Form frmMain
          Height          =   255
          Left            =   240
          TabIndex        =   7
-         Top             =   2052
+         Top             =   2212
          Width           =   1935
       End
       Begin VB.Label lblR9 
@@ -177,7 +193,7 @@ Begin VB.Form frmMain
          Height          =   255
          Left            =   240
          TabIndex        =   6
-         Top             =   1599
+         Top             =   1719
          Width           =   1935
       End
       Begin VB.Label lblR8 
@@ -186,7 +202,7 @@ Begin VB.Form frmMain
          Height          =   255
          Left            =   240
          TabIndex        =   5
-         Top             =   1146
+         Top             =   1226
          Width           =   1935
       End
       Begin VB.Label lblRT 
@@ -195,7 +211,7 @@ Begin VB.Form frmMain
          Height          =   255
          Left            =   240
          TabIndex        =   4
-         Top             =   693
+         Top             =   733
          Width           =   1935
       End
       Begin VB.Label lblVCC 
@@ -209,23 +225,23 @@ Begin VB.Form frmMain
       End
    End
    Begin VB.PictureBox cavCurve 
-      Height          =   4695
-      Left            =   240
-      ScaleHeight     =   4635
+      Height          =   4935
+      Left            =   120
+      ScaleHeight     =   4875
       ScaleWidth      =   5595
       TabIndex        =   1
       Top             =   4800
       Width           =   5655
    End
    Begin VB.PictureBox cavSch 
-      Height          =   4500
-      Left            =   240
-      Picture         =   "frmMain.frx":0027
-      ScaleHeight     =   4440
-      ScaleWidth      =   11985
+      Height          =   4470
+      Left            =   120
+      Picture         =   "frmMain.frx":009B
+      ScaleHeight     =   4410
+      ScaleWidth      =   12000
       TabIndex        =   0
       Top             =   120
-      Width           =   12045
+      Width           =   12060
    End
 End
 Attribute VB_Name = "frmMain"
@@ -234,4 +250,3 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Option Explicit
-
