@@ -9,7 +9,7 @@
     而最新版的616白光控制器4.0使用了三线控制方法。使用三线控制电路可以使温度的变化比较接近于线性变化，使用更加方便。
 
   此软件就是用于分析和设计此三线式控制电路，可以直观的看到选定的阻值组合的调温线性度，如果你正在DIY一个白菜白光电路，但是手头没有原电路上标注的电阻器阻值，则此软件也可以为了计算和推荐一些其他的组合，总有一种组合你会满意。
-![ScreenShot](https://github.com/cdhigh/CheapHakkoCurveAnalyser/master/GUI/ScreenShot.png)
+![ScreenShot](https://github.com/cdhigh/CheapHakkoCurveAnalyser/blob/master/GUI/ScreenShot.png)
 
 ##主要特性
 
