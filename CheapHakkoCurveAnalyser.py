@@ -7,6 +7,8 @@
     GUI界面采用Python内置的Tkinter标准库，使用作者自己的TkinterDesigner工具自动生成界面代码。
     <https://github.com/cdhigh/tkinter-designer>
     
+    外部依赖：
+        bestchoices_n_v2t.pyd
     Author：
         cdhigh <https://github.com/cdhigh>
     License:
@@ -15,7 +17,7 @@
         2015-08-13
 """
 
-__Version__ = '0.2'
+__Version__ = '1.0'
 
 import os, sys
 if sys.version_info[0] == 2:
@@ -637,6 +639,12 @@ class Application_ui(Frame):
         self.cavSch = Canvas(self.top, takefocus=1)
         self.cavSch.place(relx=0.01, rely=0.012, relwidth=0.971, relheight=0.452)
 
+        self.cmbSortPolicyList = ['综合排序（150-500度）','综合排序（200-400度）','综合排序（150-400度）','最优线性','最优温度范围',]
+        self.cmbSortPolicyVar = StringVar(value='综合排序（150-500度）')
+        self.cmbSortPolicy = Combobox(self.frameDesgin, state='readonly', text='综合排序（150-500度）', textvariable=self.cmbSortPolicyVar, values=self.cmbSortPolicyList)
+        self.cmbSortPolicy.place(relx=0.64, rely=0.285, relwidth=0.322)
+        self.cmbSortPolicy.bind('<<ComboboxSelected>>', self.cmbSortPolicy_ComboboxSelected)
+
         self.lstBestChoicesVar = StringVar(value='lstBestChoices')
         self.lstBestChoices = Listbox(self.frameDesgin, listvariable=self.lstBestChoicesVar)
         self.lstBestChoices.place(relx=0.64, rely=0.356, relwidth=0.322, relheight=0.617)
@@ -669,7 +677,7 @@ class Application_ui(Frame):
         self.txtMinTemp = Entry(self.frameDesgin, textvariable=self.txtMinTempVar)
         self.txtMinTemp.place(relx=0.376, rely=0.73, relwidth=0.209, relheight=0.053)
 
-        self.txtR10Var = StringVar(value='56000')
+        self.txtR10Var = StringVar(value='56k')
         self.txtR10 = Entry(self.frameDesgin, textvariable=self.txtR10Var)
         self.txtR10.place(relx=0.376, rely=0.438, relwidth=0.209, relheight=0.053)
 
@@ -677,11 +685,11 @@ class Application_ui(Frame):
         self.txtR9 = Entry(self.frameDesgin, textvariable=self.txtR9Var)
         self.txtR9.place(relx=0.376, rely=0.34, relwidth=0.209, relheight=0.053)
 
-        self.txtR8Var = StringVar(value='43000')
+        self.txtR8Var = StringVar(value='43k')
         self.txtR8 = Entry(self.frameDesgin, textvariable=self.txtR8Var)
         self.txtR8.place(relx=0.376, rely=0.243, relwidth=0.209, relheight=0.053)
 
-        self.txtRTVar = StringVar(value='10000')
+        self.txtRTVar = StringVar(value='10k')
         self.txtRT = Entry(self.frameDesgin, textvariable=self.txtRTVar)
         self.txtRT.place(relx=0.376, rely=0.145, relwidth=0.209, relheight=0.053)
 
@@ -729,12 +737,6 @@ class Application_ui(Frame):
         self.lblVCC = Label(self.frameDesgin, text='运放电压VCC (V)', style='TlblVCC.TLabel')
         self.lblVCC.place(relx=0.038, rely=0.047, relwidth=0.304, relheight=0.05)
 
-        self.cmbSortPolicyList = ['综合排序（150-500度）','综合排序（200-400度）','综合排序（150-400度）','最优线性','最优温度范围',]
-        self.cmbSortPolicyVar = StringVar(value='综合排序（150-500度）')
-        self.cmbSortPolicy = Combobox(self.frameDesgin, state='readonly', text='综合排序（150-500度）', textvariable=self.cmbSortPolicyVar, values=self.cmbSortPolicyList)
-        self.cmbSortPolicy.place(relx=0.64, rely=0.285, relwidth=0.322)
-        self.cmbSortPolicy.bind('<<ComboboxSelected>>', self.cmbSortPolicy_ComboboxSelected)
-
 class Application(Application_ui):
     #这个类实现具体的事件处理回调函数。界面生成代码在Application_ui中。
     def __init__(self, master=None):
@@ -749,15 +751,26 @@ class Application(Application_ui):
         
     #根据各项参数设置，绘出调温曲线
     def cmdDrawCurve_Cmd(self, event=None):
-        try:
-            VCC = float(self.txtVCCVar.get().strip())
-            RT = int(self.txtRTVar.get().strip())
-            R8 = int(self.txtR8Var.get().strip())
-            R9 = int(self.txtR9Var.get().strip())
-            R10 = int(self.txtR10Var.get().strip())
-        except Exception as e:
-            showinfo('出错啦', '请先正确填写各项参数值：\n\n')
+        VCC, RT, R8, R9, R10 = self.GetVccAndResistors()
+        if VCC < 0:
+            showinfo('出错啦', '请先正确填写电压值。\n\n')
+            self.txtVCC.focus_set()
+            return
+        if RT < 0:
+            showinfo('出错啦', '请先正确填写电位器电阻RT值。\n\n')
             self.txtRT.focus_set()
+            return
+        if R8 < 0:
+            showinfo('出错啦', '请先正确填写电位器中点电阻R8值。\n\n')
+            self.txtR8.focus_set()
+            return
+        if R9 < 0:
+            showinfo('出错啦', '请先正确填写下分压电阻R9值。\n\n')
+            self.txtR9.focus_set()
+            return
+        if R10 < 0:
+            showinfo('出错啦', '请先正确上分压电阻R10值。\n\n')
+            self.txtR10.focus_set()
             return
         
         vrefList = CalVrefList(VCC, RT, R8, R9, R10)
@@ -777,26 +790,16 @@ class Application(Application_ui):
     
     #根据一些给定的数值计算出其他的优选组合
     def cmdBestChoices_Cmd(self, event=None):
-        try:
-            VCC = float(self.txtVCCVar.get().strip())
-            RT = float(self.txtRTVar.get().strip())
-        except Exception as e:
+        VCC, RT, R8, R9, R10 = self.GetVccAndResistors()
+        if VCC < 0:
             showinfo('出错啦', '请至少正确提供运放电源电压和电位器阻值。\n\n')
             self.txtVCC.focus_set()
             return
-        
-        try:
-            R8 = float(self.txtR8Var.get().strip())
-        except:
-            R8 = -1.0
-        try:
-            R9 = float(self.txtR9Var.get().strip())
-        except:
-            R9 = -1.0
-        try:
-            R10 = float(self.txtR10Var.get().strip())
-        except:
-            R10 = -1.0
+        if RT < 0:
+            showinfo('出错啦', '请至少正确提供运放电源电压和电位器阻值。\n\n')
+            self.txtRT.focus_set()
+            return
+            
         try:
             minTemp = float(self.txtMinTempVar.get().strip())
         except:
@@ -838,6 +841,35 @@ class Application(Application_ui):
         
         #更新列表框内容
         self.UpdateChoicesListBox(self.bestChoices)
+    
+    #返回界面上设置的电压和各电阻值，返回元祖 (VCC, RT, R8, R9, R10)，获取不到值则为-1
+    def GetVccAndResistors(self):
+        try:
+            VCC = float(self.txtVCCVar.get().strip())
+        except:
+            VCC = -1.0
+        tRT = self.txtRTVar.get().strip()
+        try:
+            RT = float(tRT[:-1]) * 1000 if tRT[-1].lower() == 'k' else float(tRT)
+        except:
+            RT = -1.0
+        tR8 = self.txtR8Var.get().strip()
+        try:
+            R8 = float(tR8[:-1]) * 1000 if tR8[-1].lower() == 'k' else float(tR8)
+        except:
+            R8 = -1.0
+        tR9 = self.txtR9Var.get().strip()
+        try:
+            R9 = float(tR9[:-1]) * 1000 if tR9[-1].lower() == 'k' else float(tR9)
+        except:
+            R9 = -1.0
+        tR10 = self.txtR10Var.get().strip()
+        try:
+            R10 = float(tR10[:-1]) * 1000 if tR10[-1].lower() == 'k' else float(tR10)
+        except:
+            R10 = -1.0
+        
+        return VCC, RT, R8, R9, R10
         
     #根据用户选择的排序策略排序推荐组合，并更新到列表框
     def UpdateChoicesListBox(self, bestChoices):
@@ -892,10 +924,29 @@ class Application(Application_ui):
             
         #构建带空格的字符串，用于填充列表框
         slChoices = []
-        for choice in choices1[:30]:
-            #原先的元素[VCC,RT,R8,R9,R10,tempList,diffLinear]
-            slChoices.append('%d,%d,%d,%d,%d,%d,%d' % 
-                (choice[2],choice[3],choice[4],choice[5][0],choice[5][-1],choice[0],choice[1]))
+        for VCC, tRT, tR8, tR9, tR10, tempList, diffLinear in choices1[:30]:
+            RT = ('%.1f' % tRT).strip()
+            if RT.endswith('000.0'):
+                RT = RT[:-5] + 'k'
+            elif RT.endswith('.0'):
+                RT = RT[:-2]
+            R8 = ('%.1f' % tR8).strip()
+            if R8.endswith('000.0'):
+                R8 = R8[:-5] + 'k'
+            elif R8.endswith('.0'):
+                R8 = R8[:-2]
+            R9 = ('%.1f' % tR9).strip()
+            if R9.endswith('000.0'):
+                R9 = R9[:-5] + 'k'
+            elif R9.endswith('.0'):
+                R9 = R9[:-2]
+            R10 = ('%.1f' % tR10).strip()
+            if R10.endswith('000.0'):
+                R10 = R10[:-5] + 'k'
+            elif R10.endswith('.0'):
+                R10 = R10[:-2]
+            slChoices.append('%s,%s,%s,%d,%d,%d,%s' % 
+                (R8, R9, R10, tempList[0], tempList[-1], VCC, RT))
         self.lstBestChoicesVar.set(' '.join(slChoices))
     
     def cmbSortPolicy_ComboboxSelected(self, event):

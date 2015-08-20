@@ -16,7 +16,7 @@
   * 给定各电阻组合后可以绘制出根据电位器旋转角度对应的调温曲线。
   * 给定电阻组合后可以计算出最低温度和最高温度。
   * 可以通过任何给定的已知电阻或需要的温度范围，计算和推荐可能的其他电阻阻值。
-  * 软件托管在github上 Github 仓库链接
+  * 软件托管在github上 Github [仓库链接](https://github.com/cdhigh/CheapHakkoCurveAnalyser)
 
 ##绘制调温曲线使用说明
 

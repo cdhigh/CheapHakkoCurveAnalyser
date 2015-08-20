@@ -97,7 +97,7 @@ Begin VB.Form frmMain
          Height          =   270
          Left            =   2400
          TabIndex        =   14
-         Text            =   "56000"
+         Text            =   "56k"
          Top             =   2212
          Width           =   1335
       End
@@ -113,7 +113,7 @@ Begin VB.Form frmMain
          Height          =   270
          Left            =   2400
          TabIndex        =   12
-         Text            =   "43000"
+         Text            =   "43k"
          Top             =   1226
          Width           =   1335
       End
@@ -121,7 +121,7 @@ Begin VB.Form frmMain
          Height          =   270
          Left            =   2400
          TabIndex        =   11
-         Text            =   "10000"
+         Text            =   "10k"
          Top             =   733
          Width           =   1335
       End
